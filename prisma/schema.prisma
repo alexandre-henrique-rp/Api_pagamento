@@ -1,0 +1,630 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model AGRV {
+  idagrv          Int       @id @default(autoincrement())
+  nome            String?   @db.VarChar(100)
+  cpf             String?   @db.VarChar(20)
+  nascimento      DateTime? @db.Date
+  rg              String?   @db.VarChar(20)
+  linkcnh         String?   @db.Text
+  linkfotoperfil  String?   @db.Text
+  logradouro      String?   @db.Text
+  numero          String?   @db.Text
+  complemento     String?   @db.Text
+  cep             String?   @db.Text
+  municipio       String?   @db.Text
+  codmunicipio    String?   @db.Text
+  uf              String?   @db.Text
+  whatsapp        String?   @db.Text
+  celular         String?   @db.Text
+  fixo            String?   @db.Text
+  email           String?   @db.Text
+  email2          String?   @db.Text
+  permissaoacesso String?   @db.Text
+  senha           String?   @db.Text
+  chavepix        String?   @db.Text
+  nomebanco       String?   @db.Text
+  numerobanco     String?   @db.Text
+  numeroagencia   String?   @db.Text
+  numeroconta     String?   @db.Text
+  tipocontabanco  String?   @db.Text
+  nomepolo        String?   @db.Text
+  numeropolo      Int?
+  linklogopolo    String?   @db.Text
+  municipiopolo   String?   @db.Text
+  ufpolo          String?   @db.Text
+  a1pj_12m        Int?
+  a3pj_36m        Int?
+  a1pf_12m        Int?
+  a3pf_36m        Int?
+  createdAt       DateTime  @db.DateTime(0)
+  updatedAt       DateTime  @db.DateTime(0)
+  tipopix         String?   @db.Text
+  bairro          String?   @db.Text
+  painel_agrv     Int?
+  obs             String?   @db.Text
+}
+
+model Calendario {
+  Id         Int       @id @default(autoincrement())
+  data       DateTime? @db.Date
+  dia_semana String?   @db.VarChar(50)
+  feriado    String?   @db.VarChar(50)
+}
+
+model PgAberto {
+  id             Int       @id @default(autoincrement())
+  nome           String?   @db.VarChar(100)
+  razao          String?   @db.VarChar(100)
+  cnpj           String?   @db.VarChar(100)
+  cpf            String?   @db.VarChar(100)
+  txid           String?   @db.VarChar(100)
+  status         String?   @db.VarChar(100)
+  cliente        Int       @unique(map: "PgAberto_UN")
+  msg            Int?
+  statusPg       String?   @db.VarChar(100)
+  data_pagamento DateTime? @db.DateTime(0)
+  createdAt      DateTime? @db.DateTime(0)
+  updatedAt      DateTime? @db.DateTime(0)
+  fcweb          fcweb     @relation(fields: [cliente], references: [id], onUpdate: Restrict, map: "PgAberto_FK")
+
+  @@index([id], map: "PgAberto_id_IDX")
+}
+
+model Teste_conecxao {
+  id  Int     @id @default(autoincrement())
+  msg String? @db.VarChar(100)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model UNICA {
+  c_unico     Int    @id @default(autoincrement())
+  data        String @db.VarChar(11)
+  hora        String @db.VarChar(11)
+  tipocd      String @db.Text
+  referencia  String @db.VarChar(20)
+  unidade     String @db.VarChar(20)
+  nome        String @db.VarChar(200)
+  cpf         String @db.VarChar(20)
+  razaosocial String @db.VarChar(200)
+  cnpj        String @db.VarChar(20)
+  email       String @db.VarChar(200)
+  cidade      String @db.VarChar(50)
+
+  @@index([c_unico], map: "c_unico")
+}
+
+model accounts {
+  id                  String  @id @default("") @db.Char(36)
+  type                String  @db.VarChar(255)
+  provider            String  @db.VarChar(255)
+  provider_account_id String  @db.VarChar(255)
+  refresh_token       String? @db.VarChar(255)
+  access_token        String? @db.VarChar(255)
+  expires_at          Int?
+  token_type          String? @db.VarChar(255)
+  scope               String? @db.VarChar(255)
+  id_token            String? @db.VarChar(255)
+  session_state       String? @db.VarChar(255)
+  user_id             String? @db.Char(36)
+  users               users?  @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "accounts_ibfk_1")
+
+  @@index([user_id], map: "user_id")
+}
+
+model arquivo {
+  id               Int      @id @default(autoincrement())
+  cpfcnpj          String   @db.Text
+  novo_nome        String   @db.Text
+  nomearquivo      String   @db.Text
+  dtUParq          DateTime @db.Date
+  novo_nome_recibo String   @db.Text
+  dtUPrec          DateTime @db.Date
+  vencimento       DateTime @db.Date
+  valor            String   @db.Text
+}
+
+model blocodenotas {
+  id            Int    @id @default(autoincrement())
+  numeroDAlinha Int    @db.TinyInt
+  cor           String @db.Text
+  atendimento   String @db.Text
+  titulo        String @db.Text
+  anotacoes     String @db.Text
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model boleto {
+  id             Int    @id @default(autoincrement()) @db.UnsignedInt
+  referencia     String @db.Text
+  unidade        Int
+  idfcw          String @db.Text
+  fouj           String @db.Text
+  tipocd         String @db.Text
+  vectoboleto    String @db.Text
+  valorcd        String @db.Text
+  cliente        String @db.Text
+  cpfcnpj        String @db.Text
+  email          String @db.Text
+  endereco       String @db.Text
+  nrua           String @db.Text
+  bairro         String @db.Text
+  cidade         String @db.Text
+  uf             String @db.Text
+  cep            String @db.Text
+  nossonumero    String @db.Text
+  linhadigitavel String @db.Text
+  codigobarras   String @db.Text
+  datahoje       String @db.Text
+  remessa        String @db.Text
+  baixa          String @db.Text
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model boleto_efi {
+  id         Int       @id @default(autoincrement())
+  id_efi     String?   @db.VarChar(100)
+  nome       String?   @db.VarChar(100)
+  produto    String?   @db.VarChar(100)
+  vencimento DateTime? @db.Date
+  createdAt  DateTime  @db.DateTime(0)
+  updatedAt  DateTime  @db.DateTime(0)
+  barcode    String?   @db.Text
+  pix_qrcode String?   @db.Text
+  link       String?   @db.VarChar(100)
+  boleto     String?   @db.VarChar(100)
+  boleto_pdf String?   @db.VarChar(100)
+  pg_id      String?   @db.VarChar(100)
+  status_pg  String?   @db.VarChar(100)
+  pix_link   String?   @db.Text
+  status_efi String?   @db.VarChar(100)
+  type       String?   @db.VarChar(100)
+  doc        String?   @db.VarChar(100)
+}
+
+model clientesNFE {
+  ID         Int       @id @default(autoincrement())
+  CPF        String?   @db.Text
+  CNPJ       String?   @db.Text
+  Cliente    String?   @db.VarChar(50)
+  RAZAO      String?   @db.VarChar(50)
+  Vencimento DateTime? @db.Date
+  Valor      Int?
+  LINK       String?   @db.VarChar(50)
+  TEL1       String?   @db.Text
+  TEL2       String?   @db.Text
+  STATUS     Int?
+  createdAt  DateTime  @db.DateTime(0)
+  updatedAt  DateTime  @db.DateTime(0)
+  email      String?   @db.VarChar(100)
+
+  @@index([ID], map: "clientesNFE_ID_IDX")
+}
+
+model cupons_desconto {
+  id                   Int      @id @default(autoincrement())
+  cupom                String   @db.VarChar(50)
+  porcentagem_desconto Float
+  ativo                Boolean
+  criado_em            DateTime @default(now()) @db.Timestamp(0)
+  atualizado_em        DateTime @default(now()) @db.Timestamp(0)
+}
+
+model erp {
+  id            Int      @id @unique(map: "erp_id_IDX") @default(autoincrement())
+  nome          String?  @db.VarChar(100)
+  fantasia      String?  @db.VarChar(100)
+  email         String?  @db.VarChar(100)
+  end           String?  @db.VarChar(100)
+  bairro        String?  @db.VarChar(100)
+  numero        Int?
+  cidade        String?  @db.VarChar(100)
+  pais          String?  @db.VarChar(100)
+  Ie            String?  @db.VarChar(100)
+  tel           String?  @db.VarChar(100)
+  whatsapp      String   @db.VarChar(100)
+  a1pf          Int
+  a3pf          Int?
+  a1pj          Int
+  a3pj          Int?
+  status        Int
+  regime        String?  @db.VarChar(100)
+  createdAt     DateTime @db.DateTime(0)
+  updatedAt     DateTime @db.DateTime(0)
+  cnpj          String?  @db.VarChar(100)
+  uf            String?  @db.VarChar(100)
+  simples       String?  @db.VarChar(100)
+  unidade       String?  @db.VarChar(100)
+  authorization String?  @db.VarChar(100)
+  repasse       Int?
+}
+
+model erp_log {
+  id           Int       @id @default(autoincrement())
+  user         String?   @db.VarChar(100)
+  createdAt    DateTime  @db.DateTime(0)
+  clienteId    Int?
+  clienteTel   String?   @db.VarChar(100)
+  clienteName  String?   @db.VarChar(100)
+  clienteValor String?   @db.VarChar(100)
+  updatedAt    DateTime? @db.DateTime(0)
+  error        String?   @db.Text
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model fcweb {
+  id                  Int       @id @default(autoincrement())
+  s_alerta            String?   @db.Text
+  referencia          String?   @db.Text
+  id_boleto           String?   @db.Text
+  id_cancelar_bol_rem String?   @db.Text
+  unidade             String?   @db.Text
+  responsavel         String?   @db.Text
+  criou_fc            String    @db.Text
+  andamento           String?   @db.Text
+  prioridade          String?   @db.Text
+  solicitacao         String?   @db.Text
+  venda               String?   @db.Text
+  cpf                 String?   @db.Text
+  cnpj                String?   @db.Text
+  nome                String?   @db.Text
+  razaosocial         String?   @db.Text
+  vectoboleto         DateTime? @db.Date
+  unico               String?   @db.Text
+  contador            String?   @db.Text
+  obscont             String?   @db.Text
+  comissaoparceiro    Float?    @db.Float
+  scp                 String?   @db.VarChar(10)
+  tipocd              String?   @db.Text
+  valorcd             String?   @db.Text
+  custocd             String?   @db.Text
+  custoCdpar          String?   @db.Text
+  estatos_pgto        String?   @db.Text
+  pgto_efi            String    @db.VarChar(100)
+  formapgto           String?   @db.Text
+  vouchersoluti       String?   @db.Text
+  ct_parcela          String?   @db.Text
+  telefone            String?   @db.Text
+  telefone2           String?   @db.Text
+  email               String?   @db.Text
+  dtnascimento        String?   @db.Text
+  rg                  String?   @db.Text
+  cei                 String?   @db.Text
+  endereco            String?   @db.Text
+  nrua                String?   @db.Text
+  bairro              String?   @db.Text
+  complemento         String?   @db.Text
+  cep                 String?   @db.Text
+  uf                  String?   @db.Text
+  im                  Int
+  cidade              String?   @db.Text
+  observacao          String?   @db.LongText
+  vctoCD              DateTime? @db.Date
+  historico           String?   @db.LongText
+  arquivo             String?   @db.VarChar(100)
+  nomearquivo         String?   @db.VarChar(100)
+  obsrenovacao        String?   @db.Text
+  dt_aprovacao        DateTime? @db.Date
+  comicao             Float?    @db.Float
+  validacao           String?   @db.Text
+  nfe                 String?   @db.Text
+  urlnota             String?   @db.Text
+  id_fcw_soluti       String?   @db.VarChar(11)
+  dt_agenda           DateTime? @db.Date
+  hr_agenda           DateTime? @db.Time(0)
+  obs_agenda          String?   @db.Text
+  reg_cnh             String?   @db.Text
+  createdAt           DateTime  @db.DateTime(0)
+  updatedAt           DateTime  @db.DateTime(0)
+  smspg               Int?
+  id_ret_soluti       Int
+  txid                String?   @db.VarChar(100)
+  qrcodeLink          String?   @db.Text
+  CreatePixDate       DateTime? @db.DateTime(0)
+  ConclusionPixDate   DateTime? @db.DateTime(0)
+  telPix              String?   @db.VarChar(100)
+  emailPix            String?   @db.VarChar(100)
+  imgCode             String?   @db.Text
+  Datepagmento        DateTime? @db.DateTime(0)
+  msg_retorno         String?   @db.Text
+  linkpix             String?   @db.Text
+  PgAberto            PgAberto?
+
+  @@index([id], map: "id")
+}
+
+model leads {
+  id                 Int      @id @default(autoincrement())
+  nome               String   @db.VarChar(255)
+  telefone_1         String   @db.VarChar(20)
+  telefone_2         String?  @db.VarChar(20)
+  email              String   @db.VarChar(255)
+  cpf                String   @db.VarChar(30)
+  cnpj               String?  @db.VarChar(30)
+  data_nascimento    String   @db.VarChar(15)
+  razao_social       String?  @db.VarChar(255)
+  tipo_lead          String   @db.VarChar(30)
+  certificado        String   @db.VarChar(50)
+  cupom_desconto     String?  @db.VarChar(20)
+  valor              Decimal  @db.Decimal(10, 0)
+  valor_com_desconto Decimal? @db.Decimal(10, 0)
+  criado_em          DateTime @default(now()) @db.Timestamp(0)
+  atualizado_em      DateTime @default(now()) @db.Timestamp(0)
+}
+
+model log_error {
+  id        Int       @id @default(autoincrement())
+  ref       String?   @db.VarChar(100)
+  log       String?   @db.VarChar(100)
+  reg       DateTime? @default(now()) @db.Timestamp(0)
+  dia       String?   @db.VarChar(100)
+  titulo    String?   @db.VarChar(100)
+  email     String?   @db.VarChar(100)
+  doc       String?   @db.VarChar(100)
+  createdAt DateTime  @default(now()) @db.DateTime(0)
+  updatedAt DateTime  @db.DateTime(0)
+
+  @@index([id], map: "log_error_id_IDX")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model notanfe {
+  id                   Int       @id @default(autoincrement())
+  Cliente              String    @db.VarChar(100)
+  Fantasia             String    @db.VarChar(80)
+  LINK                 String    @db.VarChar(100)
+  WhatsApp             String    @db.VarChar(100)
+  WhatsApp2            String?   @db.VarChar(100)
+  TEL                  String?   @db.VarChar(100)
+  email                String    @db.VarChar(80)
+  razaosocial          String    @db.VarChar(80)
+  CNPJ                 String    @db.VarChar(30)
+  ie                   String    @db.VarChar(30)
+  ultimaNota           String    @db.VarChar(20)
+  VctoCertificado      DateTime? @db.Date
+  Valor                String?   @db.VarChar(20)
+  situacao             String    @db.VarChar(20)
+  plano                String    @db.VarChar(80)
+  dominio              String    @db.VarChar(80)
+  user_senha           String    @db.VarChar(20)
+  contador             String    @db.VarChar(80)
+  endereco             String    @db.Text
+  data_inclusao        DateTime  @db.Date
+  data_inicio_cobranca DateTime  @db.Date
+}
+
+model notaservico {
+  id                  Int      @id @default(autoincrement())
+  data                DateTime @db.Date
+  referencia          String   @db.Text
+  estatus             String   @db.Text
+  idnf                String   @db.Text
+  idfcw               String   @db.Text
+  cliente             String   @db.Text
+  cpfcnpj             String   @db.Text
+  im                  String   @db.Text
+  email               String   @db.Text
+  cep                 String   @db.Text
+  endereco            String   @db.Text
+  numero              String   @db.Text
+  bairro              String   @db.Text
+  cidade              String   @db.Text
+  uf                  String   @db.Text
+  valor               String   @db.Text
+  descricao           String   @db.Text
+  numLote             Int?
+  codigomunicipio     String   @db.Text
+  Protocolo           String?  @db.VarChar(45)
+  enderecoComplemento String?  @db.Text
+  NumeroNfse          Int?
+  UrlVisualizacao     String?  @db.Text
+  CodigoVerificacao   String?  @db.LongText
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model parceiro {
+  codigo                Int       @id @default(autoincrement())
+  usuario               String?   @db.Text
+  senha                 String?   @db.Text
+  mensagem              String?   @db.Text
+  unidade               String?   @db.Text
+  nome                  String?   @db.Text
+  fone                  String?   @db.Text
+  email                 String?   @db.Text
+  observacao            String?   @db.Text
+  endereco              String?   @db.Text
+  A1PJ_12               String?   @map("A1PJ-12") @db.Text
+  A3PJ_12               String?   @map("A3PJ-12") @db.Text
+  A3PJ_24               String?   @map("A3PJ-24") @db.Text
+  A3PJ_36               String?   @map("A3PJ-36") @db.Text
+  A1PF_12               String?   @map("A1PF-12") @db.Text
+  A3PF_12               String?   @map("A3PF-12") @db.Text
+  A3PF_24               String?   @map("A3PF-24") @db.Text
+  A3PF_36               String?   @map("A3PF-36") @db.Text
+  ocultar_valor_volcher String?   @db.Text
+  tipo_comissao         String?   @db.Text
+  whatsapp              String?   @db.VarChar(100)
+  createdAt             DateTime? @db.DateTime(0)
+  updatedAt             DateTime? @db.DateTime(0)
+  status                Int?      @default(1)
+  comicao               Int?      @default(0)
+}
+
+model price_cert {
+  id    Int     @id @default(autoincrement())
+  cert  String? @db.VarChar(100)
+  price String? @db.VarChar(100)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model produtos {
+  id        Int       @id @unique(map: "produtos_id_IDX") @default(autoincrement())
+  title     String?   @db.VarChar(100)
+  value     String?   @db.VarChar(100)
+  descricao String?   @db.Text
+  createdAt DateTime? @db.DateTime(0)
+  updatedAt DateTime? @db.DateTime(0)
+}
+
+model promo {
+  id           Int    @id @default(autoincrement())
+  datavalidade String @db.Text
+  referencia   String @db.Text
+  tipocd       String @db.Text
+  ativacao     String @db.Text
+  indicacao    String @db.Text
+  cnpj         String @db.Text
+  rsocial      String @db.Text
+  responsavel  String @db.Text
+  cpf          String @db.Text
+  celular      String @db.Text
+  email        String @db.Text
+  formapgto    String @db.Text
+  valor        String @db.Text
+  datavisita   String @db.Text
+  horavisita   String @db.Text
+}
+
+model rembra {
+  id          Int    @id @default(autoincrement())
+  criado      String @db.Text
+  transmitido String @db.VarChar(5)
+  linhaP      String @db.VarChar(300)
+  linhaQ      String @db.VarChar(300)
+}
+
+model revenda {
+  id            Int      @id @default(autoincrement())
+  nome          String   @db.VarChar(255)
+  telefone      String   @db.VarChar(255)
+  email         String   @db.VarChar(255)
+  cidade        String   @db.VarChar(255)
+  ja_trabalhou  String   @db.VarChar(255)
+  como_conheceu String   @db.VarChar(255)
+  criado_em     DateTime @default(now()) @db.Timestamp(0)
+  atualizado_em DateTime @default(now()) @db.Timestamp(0)
+}
+
+model sessions {
+  id            String   @id @default("") @db.Char(36)
+  expires       DateTime @db.DateTime(0)
+  session_token String   @unique(map: "sessionToken") @db.VarChar(255)
+  user_id       String?  @db.Char(36)
+  users         users?   @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "sessions_ibfk_1")
+
+  @@index([user_id], map: "user_id")
+}
+
+model sorteio {
+  id          Int      @id @default(autoincrement())
+  nome        String   @db.VarChar(100)
+  email       String   @db.VarChar(100)
+  telefone    String   @db.VarChar(100)
+  cep         String   @db.VarChar(100)
+  enderco     String   @db.VarChar(100)
+  complemento String?  @db.VarChar(100)
+  bairro      String?  @db.VarChar(100)
+  numero      String?  @db.VarChar(100)
+  uf          String?  @db.VarChar(100)
+  cidade      String?  @db.VarChar(100)
+  cpf         String?  @db.VarChar(100)
+  empresa     String?  @db.VarChar(100)
+  certificado String?  @db.VarChar(100)
+  createdAt   DateTime @db.DateTime(0)
+  updatedAt   DateTime @db.DateTime(0)
+  lgpd        String?  @db.VarChar(100)
+
+  @@index([id], map: "sorteio_id_IDX")
+}
+
+model users {
+  id             String     @id @default("") @db.Char(36)
+  name           String?    @db.VarChar(255)
+  email          String?    @unique(map: "email") @db.VarChar(255)
+  email_verified DateTime?  @db.DateTime(0)
+  image          String?    @db.VarChar(255)
+  accounts       accounts[]
+  sessions       sessions[]
+}
+
+model usuariosGDC {
+  id      Int    @id @default(autoincrement())
+  chave   String @db.Text
+  cpfcnpj String @db.Text
+  nome    String @db.Text
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model usuariosfcw {
+  idagr               Int      @id @default(autoincrement())
+  usuario             String?  @db.Text
+  senha               String?  @db.Text
+  nome                String?  @db.Text
+  c_unidade           Int?
+  polo                String?  @db.Text
+  bloc_filial         String?  @db.Text
+  bloco_de_notas      String?  @db.Text
+  bt_producao         String?  @db.Text
+  bt_comissao         String?  @db.Text
+  tabela_voucher      String?  @db.Text
+  ver_t_custo         String?  @db.Text
+  bloc_vl_comicao     String?  @db.Text
+  bloquearINT         Int?
+  bt_ag_indica        String?  @db.Text
+  bt_sol_boleto       String?  @db.Text
+  bloc_bt_bol_fcw     String?  @db.Text
+  bloc_bt_nfe_fcw     String?  @db.Text
+  bloc_cont_obs       String?  @db.Text
+  bt_financeiro       String?  @db.Text
+  A1PF                String?  @db.Text
+  A3PF_12             String?  @map("A3PF-12") @db.Text
+  A3PF_24             String?  @map("A3PF-24") @db.Text
+  A3PF                String?  @db.Text
+  A3PF_HSM_1ano       String?  @map("A3PF-HSM-1ano") @db.Text
+  A1PJ                String?  @db.Text
+  A3PJ_12             String?  @map("A3PJ-12") @db.Text
+  A3PJ_24             String?  @map("A3PJ-24") @db.Text
+  A3PJ                String?  @db.Text
+  A3PJ_HSM_1ano       String?  @map("A3PJ-HSM-1ano") @db.Text
+  bloc_nuvem          String?  @db.Text
+  verComissaoParceiro String?  @db.Text
+  senha_has           String?  @db.Text
+  createdAt           DateTime @db.DateTime(0)
+  updatedAt           DateTime @db.DateTime(0)
+  email               String?  @db.VarChar(100)
+  titulo              String?  @db.VarChar(100)
+  status              Int      @default(1)
+  permassao           String?  @db.VarChar(5)
+}
+
+model verification_tokens {
+  token      String   @id @default("") @db.VarChar(255)
+  identifier String   @db.VarChar(255)
+  expires    DateTime @db.DateTime(0)
+}
+
+model visitas {
+  id         Int    @id @default(autoincrement())
+  parceiro   String @db.Text
+  nome       String @db.Text
+  email      String @db.Text
+  telefone   String @db.Text
+  endereco   String @db.Text
+  observacao String @db.Text
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model voucher {
+  id         Int    @id @default(autoincrement())
+  voucher    String @db.Text
+  estatos    String @db.Text
+  dt_resgate Int
+  id_fcw     String @db.Text
+}
