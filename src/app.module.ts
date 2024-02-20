@@ -1,11 +1,17 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { PixModule } from './pix/pix.module';
+import { PixPaymentModule } from './integration/efi/pix_payment/pix_payment.module';
+import { CreditoPaymentModule } from './integration/efi/credito_payment/credito_payment.module';
+import { BoletoPaymentModule } from './integration/efi/boleto_payment/boleto_payment.module';
 
 @Module({
-  imports: [PixModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    PixModule,
+    PixPaymentModule,
+    CreditoPaymentModule,
+    BoletoPaymentModule,
+  ],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

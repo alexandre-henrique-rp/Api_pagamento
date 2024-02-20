@@ -7,3 +7,18 @@ services:
       - "3000:3000"
     volumes:
       - .:/home/node/app
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:

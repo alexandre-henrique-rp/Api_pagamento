@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { PixService } from './pix.service';
 import { CreatePixDto } from './dto/create-pix.dto';
 import { UpdatePixDto } from './dto/update-pix.dto';
@@ -22,11 +30,20 @@ export class PixController {
     return this.pixService.findOne(+id);
   }
 
-  @Get()
-  findQuery(@Query('serach') serach: string) {
-    return this.pixService.findAll();
+  @Get('payment/:Uuid')
+  findOne2(@Param('Uuid') Uuid: string) {
+    return this.pixService.findOne2(Uuid);
   }
 
+  @Get('create/link/:id')
+  PixCreatLink(@Param('id') id: number) {
+    return this.pixService.PixCreatLink(+id);
+  }
+
+  @Get()
+  findQuery() {
+    return this.pixService.findAll();
+  }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePixDto: UpdatePixDto) {
