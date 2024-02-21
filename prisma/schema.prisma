@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
+  url      = env("DATABASE_URL_SANDBOX")
 }
 
 model AGRV {
@@ -57,25 +57,6 @@ model Calendario {
   data       DateTime? @db.Date
   dia_semana String?   @db.VarChar(50)
   feriado    String?   @db.VarChar(50)
-}
-
-model PgAberto {
-  id             Int       @id @default(autoincrement())
-  nome           String?   @db.VarChar(100)
-  razao          String?   @db.VarChar(100)
-  cnpj           String?   @db.VarChar(100)
-  cpf            String?   @db.VarChar(100)
-  txid           String?   @db.VarChar(100)
-  status         String?   @db.VarChar(100)
-  cliente        Int       @unique(map: "PgAberto_UN")
-  msg            Int?
-  statusPg       String?   @db.VarChar(100)
-  data_pagamento DateTime? @db.DateTime(0)
-  createdAt      DateTime? @db.DateTime(0)
-  updatedAt      DateTime? @db.DateTime(0)
-  fcweb          fcweb     @relation(fields: [cliente], references: [id], onUpdate: Restrict, map: "PgAberto_FK")
-
-  @@index([id], map: "PgAberto_id_IDX")
 }
 
 model Teste_conecxao {
@@ -323,21 +304,17 @@ model fcweb {
   reg_cnh             String?   @db.Text
   createdAt           DateTime  @db.DateTime(0)
   updatedAt           DateTime  @db.DateTime(0)
-  smspg               Int?
-  id_ret_soluti       Int
-  txid                String?   @db.VarChar(100)
-  qrcodeLink          String?   @db.Text
-  CreatePixDate       DateTime? @db.DateTime(0)
-  ConclusionPixDate   DateTime? @db.DateTime(0)
-  telPix              String?   @db.VarChar(100)
-  emailPix            String?   @db.VarChar(100)
-  imgCode             String?   @db.Text
-  Datepagmento        DateTime? @db.DateTime(0)
-  msg_retorno         String?   @db.Text
-  linkpix             String?   @db.Text
-  PgAberto            PgAberto?
 
   @@index([id], map: "id")
+}
+
+model price_cert {
+  Uuid          String    @id @unique @default(uuid())
+  fcwebId       Int       @db.Int
+  Date_int      DateTime? @db.DateTime()
+  Status_pg     String    @db.VarChar(100)
+  Cliente_acess Boolean   @db.TinyInt @default(false)
+  // fcweb         fcweb[]   @relation(fields: [fcwebId], references: [id])
 }
 
 model leads {
@@ -455,12 +432,6 @@ model parceiro {
   updatedAt             DateTime? @db.DateTime(0)
   status                Int?      @default(1)
   comicao               Int?      @default(0)
-}
-
-model price_cert {
-  id    Int     @id @default(autoincrement())
-  cert  String? @db.VarChar(100)
-  price String? @db.VarChar(100)
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
