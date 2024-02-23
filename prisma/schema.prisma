@@ -241,80 +241,94 @@ model erp_log {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model fcweb {
-  id                  Int       @id @default(autoincrement())
-  s_alerta            String?   @db.Text
-  referencia          String?   @db.Text
-  id_boleto           String?   @db.Text
-  id_cancelar_bol_rem String?   @db.Text
-  unidade             String?   @db.Text
-  responsavel         String?   @db.Text
-  criou_fc            String    @db.Text
-  andamento           String?   @db.Text
-  prioridade          String?   @db.Text
-  solicitacao         String?   @db.Text
-  venda               String?   @db.Text
-  cpf                 String?   @db.Text
-  cnpj                String?   @db.Text
-  nome                String?   @db.Text
-  razaosocial         String?   @db.Text
-  vectoboleto         DateTime? @db.Date
-  unico               String?   @db.Text
-  contador            String?   @db.Text
-  obscont             String?   @db.Text
-  comissaoparceiro    Float?    @db.Float
-  scp                 String?   @db.VarChar(10)
-  tipocd              String?   @db.Text
-  valorcd             String?   @db.Text
-  custocd             String?   @db.Text
-  custoCdpar          String?   @db.Text
-  estatos_pgto        String?   @db.Text
-  pgto_efi            String    @db.VarChar(100)
-  formapgto           String?   @db.Text
-  vouchersoluti       String?   @db.Text
-  ct_parcela          String?   @db.Text
-  telefone            String?   @db.Text
-  telefone2           String?   @db.Text
-  email               String?   @db.Text
-  dtnascimento        String?   @db.Text
-  rg                  String?   @db.Text
-  cei                 String?   @db.Text
-  endereco            String?   @db.Text
-  nrua                String?   @db.Text
-  bairro              String?   @db.Text
-  complemento         String?   @db.Text
-  cep                 String?   @db.Text
-  uf                  String?   @db.Text
+  id                  Int          @id @default(autoincrement())
+  s_alerta            String?      @db.Text
+  referencia          String?      @db.Text
+  id_boleto           String?      @db.Text
+  id_cancelar_bol_rem String?      @db.Text
+  unidade             String?      @db.Text
+  responsavel         String?      @db.Text
+  criou_fc            String       @db.Text
+  andamento           String?      @db.Text
+  prioridade          String?      @db.Text
+  solicitacao         String?      @db.Text
+  venda               String?      @db.Text
+  cpf                 String?      @db.Text
+  cnpj                String?      @db.Text
+  nome                String?      @db.Text
+  razaosocial         String?      @db.Text
+  vectoboleto         DateTime?    @db.Date
+  unico               String?      @db.Text
+  contador            String?      @db.Text
+  obscont             String?      @db.Text
+  comissaoparceiro    Float?       @db.Float
+  scp                 String?      @db.VarChar(10)
+  tipocd              String?      @db.Text
+  valorcd             String?      @db.Text
+  custocd             String?      @db.Text
+  custoCdpar          String?      @db.Text
+  estatos_pgto        String?      @db.Text
+  pgto_efi            String       @db.VarChar(100)
+  formapgto           String?      @db.Text
+  vouchersoluti       String?      @db.Text
+  ct_parcela          String?      @db.Text
+  telefone            String?      @db.Text
+  telefone2           String?      @db.Text
+  email               String?      @db.Text
+  dtnascimento        String?      @db.Text
+  rg                  String?      @db.Text
+  cei                 String?      @db.Text
+  endereco            String?      @db.Text
+  nrua                String?      @db.Text
+  bairro              String?      @db.Text
+  complemento         String?      @db.Text
+  cep                 String?      @db.Text
+  uf                  String?      @db.Text
   im                  Int
-  cidade              String?   @db.Text
-  observacao          String?   @db.LongText
-  vctoCD              DateTime? @db.Date
-  historico           String?   @db.LongText
-  arquivo             String?   @db.VarChar(100)
-  nomearquivo         String?   @db.VarChar(100)
-  obsrenovacao        String?   @db.Text
-  dt_aprovacao        DateTime? @db.Date
-  comicao             Float?    @db.Float
-  validacao           String?   @db.Text
-  nfe                 String?   @db.Text
-  urlnota             String?   @db.Text
-  id_fcw_soluti       String?   @db.VarChar(11)
-  dt_agenda           DateTime? @db.Date
-  hr_agenda           DateTime? @db.Time(0)
-  obs_agenda          String?   @db.Text
-  reg_cnh             String?   @db.Text
-  createdAt           DateTime  @db.DateTime(0)
-  updatedAt           DateTime  @db.DateTime(0)
+  cidade              String?      @db.Text
+  observacao          String?      @db.LongText
+  vctoCD              DateTime?    @db.Date
+  historico           String?      @db.LongText
+  arquivo             String?      @db.VarChar(100)
+  nomearquivo         String?      @db.VarChar(100)
+  obsrenovacao        String?      @db.Text
+  dt_aprovacao        DateTime?    @db.Date
+  comicao             Float?       @db.Float
+  validacao           String?      @db.Text
+  nfe                 String?      @db.Text
+  urlnota             String?      @db.Text
+  id_fcw_soluti       String?      @db.VarChar(11)
+  dt_agenda           DateTime?    @db.Date
+  hr_agenda           DateTime?    @db.Time(0)
+  obs_agenda          String?      @db.Text
+  reg_cnh             String?      @db.Text
+  createdAt           DateTime     @db.DateTime(0)
+  updatedAt           DateTime     @db.DateTime(0)
+  price_certs         price_cert[]
 
   @@index([id], map: "id")
 }
 
 model price_cert {
   Uuid          String    @id @unique @default(uuid())
-  fcwebId       Int       @db.Int
+  FcwebId       Int       @db.Int
   Date_int      DateTime? @db.DateTime()
   Status_pg     String    @db.VarChar(100)
-  Cliente_acess Boolean   @db.TinyInt @default(false)
-  // fcweb         fcweb[]   @relation(fields: [fcwebId], references: [id])
+  Cliente_acess Boolean   @default(false) @db.TinyInt
+  Date_venc     DateTime? @db.Date()
+  Parcelas      String?   @db.VarChar(3)
+  Txid          String?   @db.Text
+  QrLink        String?   @db.Text
+  QrBase64      String?   @db.LongText
+  BarCode       String?   @db.VarChar(100)
+  LinkBolix     String?   @db.MediumText
+  LinkBoleto    String?   @db.MediumText
+  LinkBoletoPdf String?   @db.MediumText
+  Card_Adm      String?   @db.VarChar(20)
+  payment_token String?   @db.MediumText
+  payment_url   String?   @db.MediumText
+  UrlPg         String?   @db.MediumText
+  fcweb         fcweb     @relation(fields: [FcwebId], references: [id])
 }
 
 model leads {

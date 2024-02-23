@@ -33,6 +33,32 @@
 		},
 		"ghcr.io/stuartleeks/dev-container-features/shell-history:0": {},
 		"ghcr.io/jayree/devcontainer-features/sf-autocomplete:1": {}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"crystal-spider.jsdoc-generator",
+				"Codeium.codeium",
+				"christian-kohler.path-intellisense",
+				"naumovs.color-highlight",
+				"moppitz.vscode-extension-auto-import",
+				"dbaeumer.vscode-eslint",
+				"steoates.autoimport",
+				"scolo.json-to-jsdoc",
+				"imgildev.vscode-nestjs-snippets-extension",
+				"Prisma.prisma",
+				"styled-components.vscode-styled-components",
+				"humao.rest-client",
+				"bmalehorn.shell-syntax",
+				"ChakrounAnas.turbo-console-log",
+				"inferrinizzard.prettier-sql-vscode",
+				"svipas.prettier-plus",
+				"rvest.vs-code-prettier-eslint",
+				"bysabi.prettier-vscode-standard",
+				"esbenp.prettier-vscode",
+				"imgildev.vscode-nestjs-prisma-snippets"
+			]
+		}
 	}
 
 	// Features to add to the dev container. More info: https://containers.dev/features.

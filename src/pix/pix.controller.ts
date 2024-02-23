@@ -10,6 +10,7 @@ import {
 import { PixService } from './pix.service';
 import { CreatePixDto } from './dto/create-pix.dto';
 import { UpdatePixDto } from './dto/update-pix.dto';
+import { Create_link_payment } from './dto/create_link_payment.dto';
 
 @Controller('pix')
 export class PixController {
@@ -36,8 +37,11 @@ export class PixController {
   }
 
   @Get('create/link/:id')
-  PixCreatLink(@Param('id') id: number) {
-    return this.pixService.PixCreatLink(+id);
+  PixCreatLink(
+    @Param('id') id: number,
+    @Body() Create_link: Create_link_payment,
+  ) {
+    return this.pixService.PixCreatLink(id, Create_link);
   }
 
   @Get()

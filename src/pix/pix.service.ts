@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePixDto } from './dto/create-pix.dto';
 import { UpdatePixDto } from './dto/update-pix.dto';
+import { PrismaClient } from '@prisma/client/edge';
+import { Create_link_payment } from './dto/create_link_payment.dto';
+const prisma = new PrismaClient();
 
 @Injectable()
 export class PixService {
@@ -31,8 +34,28 @@ export class PixService {
     return `This action removes a #${id} pix`;
   }
 
-  PixCreatLink(id: number) {
+  /**
+   * A description of the entire function.
+   *
+   * @param {number} id - description of parameter
+   * @param {Create_link_payment} Create_link {Date_int, Status_pg} - create link
+   * @return {Promise<any>} description of return value
+   */
+  async PixCreatLink(
+    id: number,
+    Create_link: Create_link_payment,
+  ): Promise<any> {
     try {
+      // const BaseUrlPage = process.env.BASE_URL_PAGE;
+      const cerate = await prisma.price_cert.create({
+        data: {
+          FcwebId: id,
+          Date_int: Create_link.Date_int,
+          Status_pg: Create_link.Status_pg,
+        },
+      });
+      console.log(cerate);
+
       return `Link use id = ${id}`;
     } catch (error) {
       return error;
