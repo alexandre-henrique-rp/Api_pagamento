@@ -36,7 +36,7 @@ export class PixController {
     return this.pixService.findOne2(Uuid);
   }
 
-  @Get('create/link/:id')
+  @Post('create/link/:id')
   PixCreatLink(
     @Param('id') id: number,
     @Body() Create_link: Create_link_payment,

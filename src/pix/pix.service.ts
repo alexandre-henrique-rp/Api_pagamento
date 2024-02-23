@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePixDto } from './dto/create-pix.dto';
 import { UpdatePixDto } from './dto/update-pix.dto';
-import { PrismaClient } from '@prisma/client/edge';
+import { PrismaClient } from '@prisma/client';
 import { Create_link_payment } from './dto/create_link_payment.dto';
 const prisma = new PrismaClient();
 
@@ -46,18 +46,30 @@ export class PixService {
     Create_link: Create_link_payment,
   ): Promise<any> {
     try {
-      // const BaseUrlPage = process.env.BASE_URL_PAGE;
+      const BaseUrlPage = process.env.BASE_URL_PAGE;
       const cerate = await prisma.price_cert.create({
         data: {
-          FcwebId: id,
+          FcwebId: Number(id),
           Date_int: Create_link.Date_int,
           Status_pg: Create_link.Status_pg,
         },
       });
       console.log(cerate);
+      const uudi = cerate.Uuid;
+      const Url = `https://${BaseUrlPage}/${uudi}`;
 
-      return `Link use id = ${id}`;
+      const Update = await prisma.price_cert.update({
+        where: {
+          Uuid: uudi,
+        },
+        data: {
+          UrlPg: Url,
+        },
+      });
+
+      return Update;
     } catch (error) {
+      console.log(error);
       return error;
     }
   }
