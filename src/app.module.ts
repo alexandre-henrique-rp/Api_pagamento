@@ -3,6 +3,7 @@ import { PixModule } from './pix/pix.module';
 import { PixPaymentModule } from './integration/efi/pix_payment/pix_payment.module';
 import { CreditoPaymentModule } from './integration/efi/credito_payment/credito_payment.module';
 import { BoletoPaymentModule } from './integration/efi/boleto_payment/boleto_payment.module';
+import { ClientModule } from './client/client.module';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { BoletoPaymentModule } from './integration/efi/boleto_payment/boleto_pay
     PixPaymentModule,
     CreditoPaymentModule,
     BoletoPaymentModule,
+    ClientModule,
   ],
   controllers: [],
   providers: [],

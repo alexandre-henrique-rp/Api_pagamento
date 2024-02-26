@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider   = "prisma-client-js"
   engineType = "library"
 }
 
@@ -318,9 +318,14 @@ model price_cert {
   Cliente_acess Boolean   @default(false) @db.TinyInt
   Date_venc     DateTime? @db.Date()
   Parcelas      String?   @db.VarChar(3)
-  Txid          String?   @db.Text
+  TxidPix       String?   @db.Text
+  TxidBoleto    String?   @db.Text
+  TxidCartao    String?   @db.Text
   QrLink        String?   @db.Text
   QrBase64      String?   @db.LongText
+  CreatePixDate DateTime? @db.DateTime()
+  PixStatus     String?   @db.VarChar(100)
+  PixCopiaECola String?   @db.MediumText
   BarCode       String?   @db.VarChar(100)
   LinkBolix     String?   @db.MediumText
   LinkBoleto    String?   @db.MediumText

@@ -1,5 +1,10 @@
-import * as crypto from 'crypto';
+import crypto from 'crypto';
 
+/**
+ * Generates a random string of characters.
+ *
+ * @return {string} the randomly generated string
+ */
 function geraStringAleatoria(): string {
   const tamanhoMinimo = 26;
   const tamanhoMaximo = 35;
@@ -19,12 +24,12 @@ function validaString(string: string): boolean {
   return padrao.test(string);
 }
 
-export default function Txid() {
+export default function Txid(): string {
   const stringAleatoria = geraStringAleatoria();
-  const stringEhValida = validaString(stringAleatoria);
-  if (stringEhValida) {
+  if (validaString(stringAleatoria)) {
     return stringAleatoria;
   } else {
     console.log('A string gerada não atende ao padrão.');
+    return '';
   }
 }

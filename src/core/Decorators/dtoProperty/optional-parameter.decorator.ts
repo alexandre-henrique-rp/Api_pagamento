@@ -15,7 +15,7 @@ type OptionalParameterOptions = {
  * @date 2/23/2024 - 2:01:11 PM
  *
  * @export
- * @param {OptionalParameterOptions} options - {description, type, example?, enum?, enumName? }
+ * @param {OptionalParameterOptions} options - ({description, type, example?, enum?, enumName? })
  * @Options description: string - descrição do parametro
  * @Options type: string | Type<unknown> | [Type] | any - parametro tipo
  * @Options example?: any - parametro exemplo

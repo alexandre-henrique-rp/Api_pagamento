@@ -2,14 +2,44 @@ import { Injectable } from '@nestjs/common';
 import { CreatePixDto } from './dto/create-pix.dto';
 import { UpdatePixDto } from './dto/update-pix.dto';
 import { PrismaClient } from '@prisma/client';
-import { Create_link_payment } from './dto/create_link_payment.dto';
+import { PixPaymentService } from 'src/integration/efi/pix_payment/pix_payment.service';
+
 const prisma = new PrismaClient();
 
 @Injectable()
 export class PixService {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  create(createPixDto: CreatePixDto) {
-    return 'This action adds a new pix';
+  async create(uuid: string, createPixDto: CreatePixDto) {
+    try {
+      const getInfosPg = await prisma.price_cert.findUnique({
+        where: {
+          Uuid: uuid,
+        },
+      });
+
+      const id = getInfosPg.FcwebId;
+
+      const getInfosCliente = await prisma.fcweb.findUnique({
+        where: {
+          id: id,
+        },
+      });
+
+      const pixCreator: any = PixPaymentService.PixCreateEfi(getInfosCliente);
+
+      const update = await prisma.price_cert.update({
+        where: {
+          Uuid: uuid,
+        },
+        data: {
+          TxidPix: pixCreator.txid,
+          QrLink: pixCreator.location,
+          CreatePixDate: pixCreator.calendario.criacao,
+          PixStatus: pixCreator.status,
+          PixCopiaECola: pixCreator.pixCopiaECola,
+        },
+      });
+    } catch (error) {}
   }
 
   findAll() {
@@ -32,45 +62,5 @@ export class PixService {
 
   remove(id: number) {
     return `This action removes a #${id} pix`;
-  }
-
-  /**
-   * A description of the entire function.
-   *
-   * @param {number} id - description of parameter
-   * @param {Create_link_payment} Create_link {Date_int, Status_pg} - create link
-   * @return {Promise<any>} description of return value
-   */
-  async PixCreatLink(
-    id: number,
-    Create_link: Create_link_payment,
-  ): Promise<any> {
-    try {
-      const BaseUrlPage = process.env.BASE_URL_PAGE;
-      const cerate = await prisma.price_cert.create({
-        data: {
-          FcwebId: Number(id),
-          Date_int: Create_link.Date_int,
-          Status_pg: Create_link.Status_pg,
-        },
-      });
-      console.log(cerate);
-      const uudi = cerate.Uuid;
-      const Url = `https://${BaseUrlPage}/${uudi}`;
-
-      const Update = await prisma.price_cert.update({
-        where: {
-          Uuid: uudi,
-        },
-        data: {
-          UrlPg: Url,
-        },
-      });
-
-      return Update;
-    } catch (error) {
-      console.log(error);
-      return error;
-    }
   }
 }
