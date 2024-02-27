@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import EfiPay from 'sdk-typescript-apis-efi';
-import { CredentialService } from '../credential/credential.service';
+
 import Txid from './gerador_txis';
 import { Pix_GenerateDto } from './pix_generate.dto';
 
 @Injectable()
 export class PixPaymentService {
-  constructor(private readonly CredentialService: CredentialService) {}
+  constructor(private readonly CredentialService: any) {}
   /**
    *
    * @param ID - id do cliente

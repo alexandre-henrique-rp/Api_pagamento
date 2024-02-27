@@ -1,6 +1,6 @@
 import {
   Controller,
-  Get,
+  // Get,
   Post,
   // Body,
   // Patch,
@@ -8,7 +8,7 @@ import {
   // Delete,
 } from '@nestjs/common';
 import { PixService } from './pix.service';
-import { UpdatePixDto } from './dto/update-pix.dto';
+// import { UpdatePixDto } from './dto/update-pix.dto';
 
 @Controller('pix')
 export class PixController {
