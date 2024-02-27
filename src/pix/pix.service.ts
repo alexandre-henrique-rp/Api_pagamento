@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePixDto } from './dto/create-pix.dto';
-import { UpdatePixDto } from './dto/update-pix.dto';
 import { PrismaClient } from '@prisma/client';
 import { PixPaymentService } from 'src/integration/efi/pix_payment/pix_payment.service';
 
@@ -8,8 +6,9 @@ const prisma = new PrismaClient();
 
 @Injectable()
 export class PixService {
+  constructor(private readonly pixPaymentService: PixPaymentService) {}
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async create(uuid: string, createPixDto: CreatePixDto) {
+  async create(uuid: string) {
     try {
       const getInfosPg = await prisma.price_cert.findUnique({
         where: {
@@ -18,14 +17,22 @@ export class PixService {
       });
 
       const id = getInfosPg.FcwebId;
+      console.log(id);
 
-      const getInfosCliente = await prisma.fcweb.findUnique({
+      if (getInfosPg.Status_pg !== 'Em Aberto') {
+        throw new Error('Pagamento ja realizado');
+      }
+
+      const getInfosCliente: any = await prisma.fcweb.findUnique({
         where: {
           id: id,
         },
       });
 
-      const pixCreator: any = PixPaymentService.PixCreateEfi(getInfosCliente);
+      const pixCreator: any =
+        await this.pixPaymentService.PixCreateEfi(getInfosCliente);
+
+      console.log(pixCreator);
 
       const update = await prisma.price_cert.update({
         where: {
@@ -39,28 +46,11 @@ export class PixService {
           PixCopiaECola: pixCreator.pixCopiaECola,
         },
       });
-    } catch (error) {}
-  }
 
-  findAll() {
-    return `This action returns all pix`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} pix`;
-  }
-
-  findOne2(Uuid: string) {
-    console.log(Uuid);
-    return `This action returns a #${Uuid} pix`;
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  update(id: number, updatePixDto: UpdatePixDto) {
-    return `This action updates a #${id} pix`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} pix`;
+      console.log(update);
+      return update;
+    } catch (error) {
+      throw new Error('Erro ao criar Pix: ' + error.message);
+    }
   }
 }

@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { PixPaymentService } from './pix_payment.service';
-import { Credential } from '../athenticateCredentials/options';
+import EfiPay from 'sdk-typescript-apis-efi';
+import { CredentialService } from '../credential/credential.service';
 
 @Module({
-  imports: [Credential],
-  providers: [PixPaymentService],
+  imports: [EfiPay],
+  providers: [CredentialService, PixPaymentService],
 })
 export class PixPaymentModule {}

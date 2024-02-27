@@ -1,10 +1,13 @@
 ###
 GET http://localhost:3000/api/pix/payment/vfdtr3wu
 ###
-POST http://localhost:3000/api/pix/create/link/26936
+POST http://localhost:3000/api/client/create/link/26957
 content-type: application/json
 
 {
     "Date_int": "2024-02-23T19:37:31.578Z",
     "Status_pg": "Em Aberto"
 }
+
+###
+POST http://localhost:3000/api/pix/create/payment/cfa2c727-3a35-48f1-aec4-81a2642ea269

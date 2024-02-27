@@ -303,8 +303,8 @@ model fcweb {
   hr_agenda           DateTime?    @db.Time(0)
   obs_agenda          String?      @db.Text
   reg_cnh             String?      @db.Text
-  createdAt           DateTime     @db.DateTime(0)
-  updatedAt           DateTime     @db.DateTime(0)
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
   price_certs         price_cert[]
 
   @@index([id], map: "id")
